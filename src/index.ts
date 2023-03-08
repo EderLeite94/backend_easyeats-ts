@@ -11,8 +11,7 @@ const port: number = parseInt(process.env.PORT || '3000');
 
 app.use(express.json());
 //Cors
-app.use(cors());
-corsOptions();
+app.use(cors(corsOptions));
 
 //Conect database
 connectDatabase();
