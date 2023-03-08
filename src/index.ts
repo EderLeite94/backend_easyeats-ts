@@ -1,5 +1,6 @@
 import connectDatabase from './database/index'
 import companyRoutes from './controllers/company/index';
+import employeesRoutes from './controllers/employee/index';
 import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -21,4 +22,5 @@ app.listen(port, () => {
 });
 
 app.use('/api/v2', companyRoutes);
+app.use('/api/v2', employeesRoutes)
 
