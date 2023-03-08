@@ -1,8 +1,8 @@
 import connectDatabase from './database/index'
 import companyRoutes from './controllers/company/index';
 import express, { Application, Request, Response, NextFunction } from 'express';
-import cors from 'cors';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import corsOptions from './middlewares/index';
 dotenv.config();
 
@@ -11,7 +11,8 @@ const port: number = parseInt(process.env.PORT || '3000');
 
 app.use(express.json());
 //Cors
-app.use(cors(corsOptions));
+app.use(cors());
+corsOptions();
 
 //Conect database
 connectDatabase();
