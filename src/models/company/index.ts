@@ -9,7 +9,7 @@ export interface ICompany {
     email: string;
     cellPhone?: string;
     nameCorporate?: string;
-  }
+  };
   address: {
     zipCode?: string;
     address?: string;
