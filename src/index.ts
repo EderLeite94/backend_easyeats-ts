@@ -1,13 +1,10 @@
 import connectDatabase from './database/index'
-import companyRoutes from './controllers/company/index';
-import employeesRoutes from './controllers/employee/index';
-import express, { Application, Request, Response, NextFunction } from 'express';
+import express, { Application } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import corsOptions from './middlewares/index';
+import routes from './routes/index';
 dotenv.config();
-
-const app: Application = express();
+const app = express();
 const port: number = parseInt(process.env.PORT || '3000');
 
 app.use(express.json());
@@ -16,11 +13,10 @@ app.use(cors());
 
 //Conect database
 connectDatabase();
-
+//Routes
+routes(app)
 app.listen(port, () => {
-  console.info(`Aplicação rodando em http://localhost:${port}`);
+  console.info(`Aplicação rodando na porta ${port}`);
 });
 
-app.use('/api/v2', companyRoutes);
-app.use('/api/v2', employeesRoutes)
 
