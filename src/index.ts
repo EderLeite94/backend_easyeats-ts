@@ -11,7 +11,7 @@ const port: number = parseInt(process.env.PORT || '3000');
 app.use(express.json());
 //Cors
 app.use(corsMiddleware());
-
+app.use(cors());
 //Conect database
 connectDatabase();
 //Routes
