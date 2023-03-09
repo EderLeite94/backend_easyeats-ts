@@ -210,7 +210,7 @@ router.patch('/company/update-by-id/:id', async (req: Request, res: Response) =>
     }
 });
 
-router.put('/rate-us/:id/howRatedUs', async (req: Request, res: Response) => {
+router.put('/rate-us/:id/', async (req: Request, res: Response) => {
     const companyId = req.params.id;
     const howRatedUs = req.body;
     const company: ICompany | null = await Company.findById(companyId);

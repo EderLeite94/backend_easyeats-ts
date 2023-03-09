@@ -168,7 +168,7 @@ router.patch('/company/update-by-id/:id', (req, res) => __awaiter(void 0, void 0
         res.status(500).json({ error: error });
     }
 }));
-router.put('/rate-us/:id/howRatedUs', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.put('/rate-us/:id/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const companyId = req.params.id;
     const howRatedUs = req.body;
     const company = yield index_1.default.findById(companyId);
