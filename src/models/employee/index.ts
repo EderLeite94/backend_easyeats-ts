@@ -2,7 +2,6 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IEmployees {
     info: {
-        _id: any;
         cpf: string;
         firstName: string;
         surname: string;
@@ -36,9 +35,9 @@ export type EmployeesDocument = IEmployees & Document;
 const EmployeesSchema: Schema = new Schema(
     {
         info: {
-            cpf: { type: String, required: true, unique: true },
-            firstName: { type: String, required: true, unique: true },
-            surname: { type: String, required: true, unique: true },
+            cpf: { type: String, required: true },
+            firstName: { type: String, required: true },
+            surname: { type: String, required: true },
             socialName: { type: String },
             dateOfBirth: { type: String, required: true },
             cellPhone: { type: String },

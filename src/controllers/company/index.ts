@@ -9,7 +9,6 @@ const router = express.Router();
 router.post('/auth/company/sign-up', async (req: Request, res: Response) => {
     const {
         info: {
-            _id,
             cnpj,
             fantasyName,
             email,
@@ -19,6 +18,13 @@ router.post('/auth/company/sign-up', async (req: Request, res: Response) => {
             confirmPassword
         }
     } = req.body;
+    // create password
+    const salt = await bcrypt.genSalt(12);
+    const passwordHash = await bcrypt.hash(password, salt);
+
+    // Date Brazil
+    const data = new Date();
+    const now = new Date(data.getTime() - (3 * 60 * 60 * 1000));
 
     if (!cnpj) {
         return res.status(422).json({ error: 'O CNPJ é obrigatório!' });
@@ -40,35 +46,23 @@ router.post('/auth/company/sign-up', async (req: Request, res: Response) => {
         return res.status(422).json({ error: 'As senhas não conferem!' });
     }
 
-    try {
-        // check if company exists
-        const cnpjExists = await Company.findOne({ cnpj });
-
-        if (cnpjExists) {
-            return res.status(422).json({ error: 'CNPJ já cadastrado!' });
+    // check if company exists
+    const cnpjExists = await Company.findOne({ 'info.cnpj':cnpj });
+    if (cnpjExists !== null) {
+        return res.status(422).json({ error: 'CNPJ já cadastrado!' });
+    }
+    const company = {
+        info: {
+            cnpj,
+            fantasyName,
+            email
+        },
+        security: {
+            password: passwordHash,
+            accountCreateDate: now
         }
-
-        // create password
-        const salt = await bcrypt.genSalt(12);
-        const passwordHash = await bcrypt.hash(password, salt);
-
-        // Date Brazil
-        const data = new Date();
-        const now = new Date(data.getTime() - (3 * 60 * 60 * 1000));
-
-        const company = {
-            info: {
-                _id,
-                cnpj,
-                fantasyName,
-                email
-            },
-            security: {
-                password: passwordHash,
-                accountCreateDate: now
-            }
-        };
-
+    };
+    try {
         await Company.create(company);
 
         res.status(201).json({
@@ -110,7 +104,14 @@ router.get('/listcompany/:id', async (req: Request, res: Response) => {
 
 //Login Company
 router.post('/auth/company/sign-in', async (req: Request, res: Response) => {
-    const { cnpj, password } = req.body;
+    const {
+        info: {
+            cnpj
+        },
+        security: {
+            password
+        }
+    } = req.body;
 
     if (!cnpj) {
         return res.status(422).json({ message: ' O CNPJ é obrigatorio!' });

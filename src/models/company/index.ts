@@ -39,7 +39,7 @@ export type CompanyDocument = ICompany & Document;
 const CompanySchema: Schema = new Schema(
   {
     info: {
-      cnpj: { type: String, required: true, unique: true },
+      cnpj: { type: String, required: true, validate: /\d{14}/ },
       fantasyName: { type: String, required: true },
       email: { type: String, required: true },
       cellPhone: { type: String },

@@ -10,5 +10,4 @@ function corsMiddleware(): RequestHandler {
   };
   return cors();
 }
-
 export default corsMiddleware;

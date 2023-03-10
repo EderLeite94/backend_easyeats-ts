@@ -26,9 +26,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const EmployeesSchema = new mongoose_1.Schema({
     info: {
-        cpf: { type: String, required: true, unique: true },
-        firstName: { type: String, required: true, unique: true },
-        surname: { type: String, required: true, unique: true },
+        cpf: { type: String, required: true },
+        firstName: { type: String, required: true },
+        surname: { type: String, required: true },
         socialName: { type: String },
         dateOfBirth: { type: String, required: true },
         cellPhone: { type: String },

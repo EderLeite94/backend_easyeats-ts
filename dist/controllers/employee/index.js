@@ -78,7 +78,7 @@ router.post('/employee/register', (req, res) => __awaiter(void 0, void 0, void 0
         return res.status(422).json({ error: 'As senhas não conferem!' });
     }
     // check if employees exists
-    const cpfExists = yield index_1.default.findOne({ cpf: cpf });
+    const cpfExists = yield index_1.default.findOne({ 'info.cpf': cpf });
     if (cpfExists) {
         return res.status(422).json({ error: 'CPF já cadastrado!' });
     }
@@ -86,7 +86,7 @@ router.post('/employee/register', (req, res) => __awaiter(void 0, void 0, void 0
         return res.status(422).json({ error: 'As senhas não conferem!' });
     }
     try {
-        const company = yield index_2.default.findOne({ cnpj: cnpj });
+        const company = yield index_2.default.findOne({ 'info.cnpj': cnpj });
         yield index_1.default.create(employees);
         res.status(201).json({
             message: 'Colaborador cadastrado com sucesso!',

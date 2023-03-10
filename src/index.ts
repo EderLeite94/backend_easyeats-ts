@@ -1,7 +1,6 @@
 import connectDatabase from './database/index'
 import express, { Application } from 'express';
 import dotenv from 'dotenv';
-import cors from 'cors';
 import routes from './routes/index';
 import corsMiddleware from './middlewares/index';
 dotenv.config();

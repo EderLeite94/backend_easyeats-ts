@@ -1,8 +1,6 @@
 import express, { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import Employees from '../../models/employee/index';
-import { IEmployees } from '../../models/employee/index';
 import Company from '../../models/company/index';
 const router = express.Router();
 
@@ -36,7 +34,7 @@ router.post('/employee/register', async (req: Request, res: Response) => {
         company: {
             cnpj,
         }
-    } = req.body
+    } = req.body;
     //Create password
     const salt = await bcrypt.genSalt(12)
     const passwordHash = await bcrypt.hash(password, salt)
@@ -96,7 +94,7 @@ router.post('/employee/register', async (req: Request, res: Response) => {
         return res.status(422).json({ error: 'As senhas não conferem!' })
     }
     // check if employees exists
-    const cpfExists = await Employees.findOne({ cpf: cpf })
+    const cpfExists = await Employees.findOne({ 'info.cpf': cpf })
     if (cpfExists) {
         return res.status(422).json({ error: 'CPF já cadastrado!' })
     }
@@ -104,7 +102,7 @@ router.post('/employee/register', async (req: Request, res: Response) => {
         return res.status(422).json({ error: 'As senhas não conferem!' })
     }
     try {
-        const company = await Company.findOne({ cnpj: cnpj });
+        const company = await Company.findOne({ 'info.cnpj': cnpj });
         await Employees.create(employees)
         res.status(201).json({
             message: 'Colaborador cadastrado com sucesso!',

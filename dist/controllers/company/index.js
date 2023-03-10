@@ -19,7 +19,13 @@ const index_1 = __importDefault(require("../../models/company/index"));
 const router = express_1.default.Router();
 // Register company
 router.post('/auth/company/sign-up', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { info: { _id, cnpj, fantasyName, email, }, security: { password, confirmPassword } } = req.body;
+    const { info: { cnpj, fantasyName, email, }, security: { password, confirmPassword } } = req.body;
+    // create password
+    const salt = yield bcrypt_1.default.genSalt(12);
+    const passwordHash = yield bcrypt_1.default.hash(password, salt);
+    // Date Brazil
+    const data = new Date();
+    const now = new Date(data.getTime() - (3 * 60 * 60 * 1000));
     if (!cnpj) {
         return res.status(422).json({ error: 'O CNPJ é obrigatório!' });
     }
@@ -35,30 +41,23 @@ router.post('/auth/company/sign-up', (req, res) => __awaiter(void 0, void 0, voi
     if (password !== confirmPassword) {
         return res.status(422).json({ error: 'As senhas não conferem!' });
     }
-    try {
-        // check if company exists
-        const cnpjExists = yield index_1.default.findOne({ cnpj });
-        if (cnpjExists) {
-            return res.status(422).json({ error: 'CNPJ já cadastrado!' });
+    // check if company exists
+    const cnpjExists = yield index_1.default.findOne({ 'info.cnpj': cnpj });
+    if (cnpjExists !== null) {
+        return res.status(422).json({ error: 'CNPJ já cadastrado!' });
+    }
+    const company = {
+        info: {
+            cnpj,
+            fantasyName,
+            email
+        },
+        security: {
+            password: passwordHash,
+            accountCreateDate: now
         }
-        // create password
-        const salt = yield bcrypt_1.default.genSalt(12);
-        const passwordHash = yield bcrypt_1.default.hash(password, salt);
-        // Date Brazil
-        const data = new Date();
-        const now = new Date(data.getTime() - (3 * 60 * 60 * 1000));
-        const company = {
-            info: {
-                _id,
-                cnpj,
-                fantasyName,
-                email
-            },
-            security: {
-                password: passwordHash,
-                accountCreateDate: now
-            }
-        };
+    };
+    try {
         yield index_1.default.create(company);
         res.status(201).json({
             message: 'Empresa cadastrada com sucesso!',
@@ -96,7 +95,7 @@ router.get('/listcompany/:id', (req, res) => __awaiter(void 0, void 0, void 0, f
 }));
 //Login Company
 router.post('/auth/company/sign-in', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { cnpj, password } = req.body;
+    const { info: { cnpj }, security: { password } } = req.body;
     if (!cnpj) {
         return res.status(422).json({ message: ' O CNPJ é obrigatorio!' });
     }
