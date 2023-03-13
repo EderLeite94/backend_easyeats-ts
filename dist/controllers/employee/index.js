@@ -120,13 +120,15 @@ router.get('/employee/get-all/', (req, res) => __awaiter(void 0, void 0, void 0,
     const page = parseInt(req.query.page || '1');
     const limit = parseInt(req.query.limit || '5');
     const name = String(req.query.name || '');
+    const companyCNPJ = String(req.query.companyCNPJ || '');
     const nameFilter = name ? { firstName: { $regex: new RegExp(name, 'i') } } : {};
-    const employees = yield index_1.default.find(nameFilter)
+    const companyFilter = companyCNPJ ? { 'company.cnpj': { $regex: new RegExp(companyCNPJ, 'i') } } : {};
+    const employees = yield index_1.default.find(Object.assign(Object.assign({}, nameFilter), companyFilter))
         .skip((page - 1) * limit)
         .limit(limit)
         .sort('-accountcreatedate')
         .exec();
-    const totalCount = yield index_1.default.countDocuments(nameFilter);
+    const totalCount = yield index_1.default.countDocuments(Object.assign(Object.assign({}, nameFilter), companyFilter));
     res.json({
         employees,
         totalCount

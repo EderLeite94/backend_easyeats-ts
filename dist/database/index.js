@@ -9,9 +9,10 @@ const app = (0, express_1.default)();
 const port = parseInt(process.env.PORT || '3000', 10);
 const connectDatabase = (app) => {
     mongoose_1.default.set('strictQuery', true);
+    console.log('Conectando ao Easy-Eats');
     mongoose_1.default.connect(process.env.MONGODB_URI)
         .then(() => {
-        console.log('Conectado ao Earth-Community');
+        console.log('Conectado ao Easy-Eats');
         app.listen(port, () => {
             console.log(`Servidor iniciado na porta ${port}`);
         });

@@ -133,22 +133,25 @@ router.get('/employee/get-all/', async (req: Request, res: Response) => {
     const page = parseInt(req.query.page as string || '1');
     const limit = parseInt(req.query.limit as string || '5');
     const name = String(req.query.name || '');
+    const companyCNPJ = String(req.query.companyCNPJ || '');
 
     const nameFilter = name ? { firstName: { $regex: new RegExp(name, 'i') } } : {};
+    const companyFilter = companyCNPJ ? { 'company.cnpj': { $regex: new RegExp(companyCNPJ, 'i') } } : {};
 
-    const employees = await Employees.find(nameFilter)
+    const employees = await Employees.find({ ...nameFilter, ...companyFilter })
         .skip((page - 1) * limit)
         .limit(limit)
         .sort('-accountcreatedate')
         .exec();
 
-    const totalCount = await Employees.countDocuments(nameFilter);
+    const totalCount = await Employees.countDocuments({ ...nameFilter, ...companyFilter });
 
     res.json({
         employees,
         totalCount
     });
-})
+});
+
 router.patch('/employee/update-by-id/:id', async (req: Request, res: Response)=>{
     const id: string = req.params.id;
     const {
