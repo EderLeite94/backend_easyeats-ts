@@ -10,7 +10,6 @@ const index_2 = __importDefault(require("./routes/index"));
 const index_3 = __importDefault(require("./middlewares/index"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
-const port = parseInt(process.env.PORT || '3000');
 app.use(express_1.default.json());
 //Cors
 app.use((0, index_3.default)());
@@ -18,6 +17,3 @@ app.use((0, index_3.default)());
 (0, index_1.default)();
 //Routes
 (0, index_2.default)(app);
-app.listen(port, () => {
-    console.info(`Aplicação rodando na porta ${port}`);
-});

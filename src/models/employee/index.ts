@@ -17,10 +17,9 @@ export interface IEmployees {
         zipCode?: string;
         address?: string;
         locationNumber?: string;
-        complement?: string;
+        district?: string;
         city?: string;
         state?: string;
-        uf?: string;
     };
     security: {
         password: string;
@@ -50,10 +49,9 @@ const EmployeesSchema: Schema = new Schema(
             zipCode: { type: String },
             address: { type: String },
             locationNumber: { type: String },
-            complement: { type: String },
+            district: { type: String },
             city: { type: String },
             state: { type: String },
-            uf: { type: String }
         },
         security: {
             password: { type: String, required: true },

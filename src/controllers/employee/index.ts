@@ -22,10 +22,9 @@ router.post('/employee/register', async (req: Request, res: Response) => {
             zipCode,
             address,
             locationNumber,
-            complement,
+            district,
             city,
-            state,
-            uf,
+            state
         },
         security: {
             password,
@@ -57,10 +56,9 @@ router.post('/employee/register', async (req: Request, res: Response) => {
             zipCode,
             address,
             locationNumber,
-            complement,
+            district,
             city,
-            state,
-            uf,
+            state
         },
         security: {
             password: passwordHash,
@@ -170,10 +168,9 @@ router.patch('/employee/update-by-id/:id', async (req: Request, res: Response)=>
             zipCode,
             address,
             locationNumber,
-            complement,
+            district,
             city,
-            state,
-            uf,
+            state
         }
     } = req.body;
 
@@ -194,10 +191,9 @@ router.patch('/employee/update-by-id/:id', async (req: Request, res: Response)=>
             zipCode,
             address,
             locationNumber,
-            complement,
+            district,
             city,
-            state,
-            uf,
+            state
         }
     };
     try {
