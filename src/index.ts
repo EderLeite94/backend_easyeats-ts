@@ -11,7 +11,7 @@ app.use(express.json());
 //Cors
 app.use(corsMiddleware());
 //Conect database
-connectDatabase();
+connectDatabase(app);
 //Routes
 routes(app)
 

@@ -14,6 +14,6 @@ app.use(express_1.default.json());
 //Cors
 app.use((0, index_3.default)());
 //Conect database
-(0, index_1.default)();
+(0, index_1.default)(app);
 //Routes
 (0, index_2.default)(app);

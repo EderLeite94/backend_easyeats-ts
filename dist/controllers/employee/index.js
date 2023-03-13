@@ -19,7 +19,7 @@ const index_2 = __importDefault(require("../../models/company/index"));
 const router = express_1.default.Router();
 //Register Employees
 router.post('/employee/register', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { info: { cpf, firstName, surname, socialName, dateOfBirth, cellPhone, role, email, admissionDate }, address: { zipCode, address, locationNumber, complement, city, state, uf, }, security: { password, confirmPassword, }, company: { cnpj, } } = req.body;
+    const { info: { cpf, firstName, surname, socialName, dateOfBirth, cellPhone, role, email, admissionDate }, address: { zipCode, address, locationNumber, district, city, state }, security: { password, confirmPassword, }, company: { cnpj, } } = req.body;
     //Create password
     const salt = yield bcrypt_1.default.genSalt(12);
     const passwordHash = yield bcrypt_1.default.hash(password, salt);
@@ -42,10 +42,9 @@ router.post('/employee/register', (req, res) => __awaiter(void 0, void 0, void 0
             zipCode,
             address,
             locationNumber,
-            complement,
+            district,
             city,
-            state,
-            uf,
+            state
         },
         security: {
             password: passwordHash,
@@ -135,7 +134,7 @@ router.get('/employee/get-all/', (req, res) => __awaiter(void 0, void 0, void 0,
 }));
 router.patch('/employee/update-by-id/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { info: { cpf, firstName, surname, socialName, dateOfBirth, cellPhone, role, email, admissionDate, resignationDate }, address: { zipCode, address, locationNumber, complement, city, state, uf, } } = req.body;
+    const { info: { cpf, firstName, surname, socialName, dateOfBirth, cellPhone, role, email, admissionDate, resignationDate }, address: { zipCode, address, locationNumber, district, city, state } } = req.body;
     const employee = {
         info: {
             cpf,
@@ -153,10 +152,9 @@ router.patch('/employee/update-by-id/:id', (req, res) => __awaiter(void 0, void 
             zipCode,
             address,
             locationNumber,
-            complement,
+            district,
             city,
-            state,
-            uf,
+            state
         }
     };
     try {
