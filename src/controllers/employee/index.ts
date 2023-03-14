@@ -129,18 +129,19 @@ router.get('/employee/get-by-id/:id', async (req: Request, res: Response) => {
     }
 })
 // Get - Employees
-router.get('/employee/get-all/', async (req: Request, res: Response) => {
-    const page = parseInt(req.query.page as string || '1');
-    const limit = parseInt(req.query.limit as string || '5');
-    const name = String(req.query.name || '');
-    const companyCNPJ = String(req.query.companyCNPJ || '');
+router.get('/employee/get-all/:companyCNPJ?', async (req: Request, res: Response) => {
+
+    const { companyCNPJ } = req.params;
+    const page: string = req.query.page as string || '1';
+    const limit: string = req.query.limit as string || '5';
+    const name: string = req.query.name as string || '';
 
     const nameFilter = name ? { firstName: { $regex: new RegExp(name, 'i') } } : {};
     const companyFilter = companyCNPJ ? { 'company.cnpj': { $regex: new RegExp(companyCNPJ, 'i') } } : {};
 
     const employees = await Employees.find({ ...nameFilter, ...companyFilter })
-        .skip((page - 1) * limit)
-        .limit(limit)
+        .skip((parseInt(page) - 1) * parseInt(limit))
+        .limit(parseInt(limit))
         .sort('-accountcreatedate')
         .exec();
 
@@ -152,7 +153,7 @@ router.get('/employee/get-all/', async (req: Request, res: Response) => {
     });
 });
 
-router.patch('/employee/update-by-id/:id', async (req: Request, res: Response)=>{
+router.patch('/employee/update-by-id/:id', async (req: Request, res: Response) => {
     const id: string = req.params.id;
     const {
         info: {

@@ -116,16 +116,16 @@ router.get('/employee/get-by-id/:id', (req, res) => __awaiter(void 0, void 0, vo
     }
 }));
 // Get - Employees
-router.get('/employee/get-all/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const page = parseInt(req.query.page || '1');
-    const limit = parseInt(req.query.limit || '5');
-    const name = String(req.query.name || '');
-    const companyCNPJ = String(req.query.companyCNPJ || '');
+router.get('/employee/get-all/:companyCNPJ?', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { companyCNPJ } = req.params;
+    const page = req.query.page || '1';
+    const limit = req.query.limit || '5';
+    const name = req.query.name || '';
     const nameFilter = name ? { firstName: { $regex: new RegExp(name, 'i') } } : {};
     const companyFilter = companyCNPJ ? { 'company.cnpj': { $regex: new RegExp(companyCNPJ, 'i') } } : {};
     const employees = yield index_1.default.find(Object.assign(Object.assign({}, nameFilter), companyFilter))
-        .skip((page - 1) * limit)
-        .limit(limit)
+        .skip((parseInt(page) - 1) * parseInt(limit))
+        .limit(parseInt(limit))
         .sort('-accountcreatedate')
         .exec();
     const totalCount = yield index_1.default.countDocuments(Object.assign(Object.assign({}, nameFilter), companyFilter));
