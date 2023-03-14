@@ -36,10 +36,9 @@ const CompanySchema = new mongoose_1.Schema({
         zipCode: { type: String },
         address: { type: String },
         locationNumber: { type: String },
-        complement: { type: String },
+        district: { type: String },
         city: { type: String },
         state: { type: String },
-        uf: { type: String }
     },
     owner: {
         firstName: { type: String },

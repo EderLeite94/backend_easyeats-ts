@@ -14,10 +14,9 @@ export interface ICompany {
     zipCode?: string;
     address?: string;
     locationNumber?: string;
-    complement?: string;
+    district?: string;
     city?: string;
     state?: string;
-    uf?: string;
   };
   owner: {
     firstName?: string;
@@ -49,10 +48,9 @@ const CompanySchema: Schema = new Schema(
       zipCode: { type: String },
       address: { type: String },
       locationNumber: { type: String },
-      complement: { type: String },
+      district: { type: String },
       city: { type: String },
       state: { type: String },
-      uf: { type: String }
     },
     owner: {
       firstName: { type: String },
