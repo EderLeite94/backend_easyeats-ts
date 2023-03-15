@@ -154,11 +154,11 @@ router.patch('/company/update-by-id/:id', async (req: Request, res: Response) =>
     const { info, address: addressInfo, owner } = req.body;
     const { cnpj, fantasyName, email, cellPhone, companyName } = info;
     const { zipCode, address, locationNumber, district, city, state } = addressInfo;
-    const { firstName, surname, cpf, role }= owner;
+    const { firstName, surname, cpf, role } = owner;
 
     try {
         const updateCompany = await Company.updateOne({ _id: id }, req.body);
-        const company = await Company.findOne({ _id: id  });
+        const company = await Company.findOne({ _id: id });
         if (updateCompany.matchedCount === 0) {
             res.status(422).json({ message: 'A empresa não foi encontrada!' });
         }
@@ -170,7 +170,8 @@ router.patch('/company/update-by-id/:id', async (req: Request, res: Response) =>
 
 router.put('/rate-us/:id/', async (req: Request, res: Response) => {
     const companyId = req.params.id;
-    const { rating: { howRatedUs } } = req.body;
+    const { rating } = req.body;
+    const { howRatedUs } = rating
     const company: ICompany | null = await Company.findById(companyId);
 
     if (!company) {
@@ -181,7 +182,7 @@ router.put('/rate-us/:id/', async (req: Request, res: Response) => {
     }
 
     try {
-        await company.updateOne({ rating: howRatedUs });
+        await company.updateOne({ rating });
         res.json({ message: 'Avaliação atualizada com sucesso!' })
     } catch (error) {
         res.status(500).json({ error: error })

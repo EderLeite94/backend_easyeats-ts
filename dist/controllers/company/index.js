@@ -149,7 +149,8 @@ router.patch('/company/update-by-id/:id', (req, res) => __awaiter(void 0, void 0
 }));
 router.put('/rate-us/:id/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const companyId = req.params.id;
-    const { rating: { howRatedUs } } = req.body;
+    const { rating } = req.body;
+    const { howRatedUs } = rating;
     const company = yield index_1.default.findById(companyId);
     if (!company) {
         return res.status(422).json({ message: 'Empresa não encontrada' });
@@ -158,7 +159,7 @@ router.put('/rate-us/:id/', (req, res) => __awaiter(void 0, void 0, void 0, func
         return res.status(422).json({ message: 'A avaliação deve estar entre 1 e 5' });
     }
     try {
-        yield company.updateOne({ rating: howRatedUs });
+        yield company.updateOne({ rating });
         res.json({ message: 'Avaliação atualizada com sucesso!' });
     }
     catch (error) {
