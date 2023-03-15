@@ -129,30 +129,35 @@ router.get('/employee/get-by-id/:id', async (req: Request, res: Response) => {
     }
 })
 // Get - Employees
-router.get('/employee/get-all/:companyCNPJ?', async (req: Request, res: Response) => {
-
+router.get('/employee/get-all/:companyCNPJ/:name?', async (req: Request, res: Response) => {
     const { companyCNPJ } = req.params;
     const page: string = req.query.page as string || '1';
     const limit: string = req.query.limit as string || '5';
-    const name: string = req.query.name as string || '';
+    const name: string = req.query.name as string || ''
 
-    const nameFilter = name ? { firstName: { $regex: new RegExp(name, 'i') } } : {};
     const companyFilter = companyCNPJ ? { 'company.cnpj': { $regex: new RegExp(companyCNPJ, 'i') } } : {};
+    const nameFilter = name ? {'info.firstName': {$regex: new RegExp(name,'i')}} :{};
 
-    const employees = await Employees.find({ ...nameFilter, ...companyFilter })
-        .skip((parseInt(page) - 1) * parseInt(limit))
-        .limit(parseInt(limit))
-        .sort('-accountcreatedate')
-        .exec();
+    try {
+        const employees = await Employees.find({ ...nameFilter, ...companyFilter })
+            .skip((parseInt(page) - 1) * parseInt(limit))
+            .limit(parseInt(limit))
+            .sort('-accountcreatedate')
+            .exec();
 
-    const totalCount = await Employees.countDocuments({ ...nameFilter, ...companyFilter });
+        const totalCount = await Employees.countDocuments({ ...nameFilter, ...companyFilter });
 
-    res.json({
-        employees,
-        totalCount
-    });
+        res.json({
+            employees,
+            totalCount
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Coloborador não encontrado!' });
+    }
 });
 
+//Update employee 
 router.patch('/employee/update-by-id/:id', async (req: Request, res: Response) => {
     const id: string = req.params.id;
     const {

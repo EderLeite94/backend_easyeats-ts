@@ -116,24 +116,31 @@ router.get('/employee/get-by-id/:id', (req, res) => __awaiter(void 0, void 0, vo
     }
 }));
 // Get - Employees
-router.get('/employee/get-all/:companyCNPJ?', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get('/employee/get-all/:companyCNPJ/:name?', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { companyCNPJ } = req.params;
     const page = req.query.page || '1';
     const limit = req.query.limit || '5';
     const name = req.query.name || '';
-    const nameFilter = name ? { firstName: { $regex: new RegExp(name, 'i') } } : {};
     const companyFilter = companyCNPJ ? { 'company.cnpj': { $regex: new RegExp(companyCNPJ, 'i') } } : {};
-    const employees = yield index_1.default.find(Object.assign(Object.assign({}, nameFilter), companyFilter))
-        .skip((parseInt(page) - 1) * parseInt(limit))
-        .limit(parseInt(limit))
-        .sort('-accountcreatedate')
-        .exec();
-    const totalCount = yield index_1.default.countDocuments(Object.assign(Object.assign({}, nameFilter), companyFilter));
-    res.json({
-        employees,
-        totalCount
-    });
+    const nameFilter = name ? { 'info.firstName': { $regex: new RegExp(name, 'i') } } : {};
+    try {
+        const employees = yield index_1.default.find(Object.assign(Object.assign({}, nameFilter), companyFilter))
+            .skip((parseInt(page) - 1) * parseInt(limit))
+            .limit(parseInt(limit))
+            .sort('-accountcreatedate')
+            .exec();
+        const totalCount = yield index_1.default.countDocuments(Object.assign(Object.assign({}, nameFilter), companyFilter));
+        res.json({
+            employees,
+            totalCount
+        });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 }));
+//Update employee 
 router.patch('/employee/update-by-id/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const { info: { cpf, firstName, surname, socialName, dateOfBirth, cellPhone, role, email, admissionDate, resignationDate }, address: { zipCode, address, locationNumber, district, city, state } } = req.body;
