@@ -136,9 +136,8 @@ router.patch('/company/update-by-id/:id', (req, res) => __awaiter(void 0, void 0
     const { zipCode, address, locationNumber, district, city, state } = addressInfo;
     const { firstName, surname, cpf, role } = owner;
     try {
-        delete req.body.company;
         const updateCompany = yield index_1.default.updateOne({ _id: id }, req.body);
-        const company = yield index_1.default.find({ _id: id });
+        const company = yield index_1.default.findOne({ _id: id });
         if (updateCompany.matchedCount === 0) {
             res.status(422).json({ message: 'A empresa não foi encontrada!' });
         }
