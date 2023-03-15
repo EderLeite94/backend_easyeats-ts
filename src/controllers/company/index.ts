@@ -213,15 +213,16 @@ router.patch('/company/update-by-id/:id', async (req: Request, res: Response) =>
 
 router.put('/rate-us/:id/', async (req: Request, res: Response) => {
     const companyId = req.params.id;
-    const howRatedUs = req.body;
+    const { rating: { howRatedUs } } = req.body;
     const company: ICompany | null = await Company.findById(companyId);
 
     if (!company) {
         return res.status(422).json({ message: 'Empresa não encontrada' });
     }
-    if (howRatedUs.howRatedUs < 1 || howRatedUs.howRatedUs > 5) {
+    if (howRatedUs < 1 || howRatedUs > 5) {
         return res.status(422).json({ message: 'A avaliação deve estar entre 1 e 5' });
     }
+    
     try {
         await company.updateOne({ rating: howRatedUs });
         res.json({ message: 'Avaliação atualizada com sucesso!' })

@@ -169,12 +169,12 @@ router.patch('/company/update-by-id/:id', (req, res) => __awaiter(void 0, void 0
 }));
 router.put('/rate-us/:id/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const companyId = req.params.id;
-    const howRatedUs = req.body;
+    const { rating: { howRatedUs } } = req.body;
     const company = yield index_1.default.findById(companyId);
     if (!company) {
         return res.status(422).json({ message: 'Empresa não encontrada' });
     }
-    if (howRatedUs.howRatedUs < 1 || howRatedUs.howRatedUs > 5) {
+    if (howRatedUs < 1 || howRatedUs > 5) {
         return res.status(422).json({ message: 'A avaliação deve estar entre 1 e 5' });
     }
     try {

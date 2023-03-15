@@ -51,7 +51,7 @@ const CompanySchema = new mongoose_1.Schema({
         accountCreateDate: { type: Date, required: true },
     },
     rating: {
-        howRatedUs: { type: Number, default: 0 }
+        howRatedUs: { type: Number }
     }
 });
 const Company = mongoose_1.default.model('Company', CompanySchema);

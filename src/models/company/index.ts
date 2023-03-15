@@ -63,7 +63,7 @@ const CompanySchema: Schema = new Schema(
       accountCreateDate: { type: Date, required: true },
     },
     rating: {
-      howRatedUs: { type: Number, default: 0 }
+      howRatedUs: { type: Number }
     }
   },
 );
