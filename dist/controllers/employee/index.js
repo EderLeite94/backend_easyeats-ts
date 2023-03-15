@@ -137,7 +137,7 @@ router.get('/employee/get-all/:companyCNPJ/:name?', (req, res) => __awaiter(void
     }
     catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'Colaborador não encontrado!' });
     }
 }));
 //Update employee 

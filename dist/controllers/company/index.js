@@ -103,7 +103,7 @@ router.post('/auth/company/sign-in', (req, res) => __awaiter(void 0, void 0, voi
         return res.status(422).json({ message: 'A senha é obrigatoria!' });
     }
     //check if company exists
-    const company = yield index_1.default.findOne({ cnpj: cnpj });
+    const company = yield index_1.default.findOne({ 'info.cnpj': cnpj });
     if (!company) {
         return res.status(404).json({ message: 'Empresa não encontrada!' });
     }

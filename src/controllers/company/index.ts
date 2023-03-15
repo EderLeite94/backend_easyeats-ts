@@ -47,7 +47,7 @@ router.post('/auth/company/sign-up', async (req: Request, res: Response) => {
     }
 
     // check if company exists
-    const cnpjExists = await Company.findOne({ 'info.cnpj':cnpj });
+    const cnpjExists = await Company.findOne({ 'info.cnpj': cnpj });
     if (cnpjExists !== null) {
         return res.status(422).json({ error: 'CNPJ já cadastrado!' });
     }
@@ -120,7 +120,7 @@ router.post('/auth/company/sign-in', async (req: Request, res: Response) => {
         return res.status(422).json({ message: 'A senha é obrigatoria!' });
     }
     //check if company exists
-    const company: ICompany | null = await Company.findOne({ cnpj: cnpj });
+    const company: ICompany | null = await Company.findOne({ 'info.cnpj': cnpj });
 
     if (!company) {
         return res.status(404).json({ message: 'Empresa não encontrada!' });
