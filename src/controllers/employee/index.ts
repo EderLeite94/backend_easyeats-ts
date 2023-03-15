@@ -153,7 +153,7 @@ router.get('/employee/get-all/:companyCNPJ/:name?', async (req: Request, res: Re
         });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Coloborador não encontrado!' });
+        res.status(500).json({ error: 'Colaborador não encontrado!' });
     }
 });
 
