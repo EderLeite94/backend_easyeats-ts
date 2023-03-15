@@ -151,55 +151,14 @@ router.post('/auth/company/sign-in', async (req: Request, res: Response) => {
 // Update - Company ID other information
 router.patch('/company/update-by-id/:id', async (req: Request, res: Response) => {
     const id: string = req.params.id;
-    const {
-        info: {
-            cnpj,
-            fantasyName,
-            email,
-            cellPhone,
-            companyName
-        },
-        address: {
-            zipCode,
-            address,
-            locationNumber,
-            district,
-            city,
-            state
-        },
-        owner: {
-            firstName,
-            surname,
-            cpf,
-            role,
-        }
-    } = req.body;
+    const { info, address: addressInfo, owner } = req.body;
+    const { cnpj, fantasyName, email, cellPhone, companyName } = info;
+    const { zipCode, address, locationNumber, district, city, state } = addressInfo;
+    const { firstName, surname, cpf, role }= owner;
 
-    const company = {
-        info: {
-            cnpj,
-            fantasyName,
-            email,
-            cellPhone,
-            companyName
-        },
-        address: {
-            zipCode,
-            address,
-            locationNumber,
-            district,
-            city,
-            state
-        },
-        owner: {
-            firstName,
-            surname,
-            cpf,
-            role,
-        }
-    };
     try {
-        const updateCompany = await Company.updateOne({ _id: id }, company);
+        const updateCompany = await Company.updateOne({ _id: id }, req.body);
+        const company = await Company.find({ ...req.body });
         if (updateCompany.matchedCount === 0) {
             res.status(422).json({ message: 'A empresa não foi encontrada!' });
         }
@@ -220,7 +179,7 @@ router.put('/rate-us/:id/', async (req: Request, res: Response) => {
     if (howRatedUs < 1 || howRatedUs > 5) {
         return res.status(422).json({ message: 'A avaliação deve estar entre 1 e 5' });
     }
-    
+
     try {
         await company.updateOne({ rating: howRatedUs });
         res.json({ message: 'Avaliação atualizada com sucesso!' })

@@ -131,33 +131,13 @@ router.post('/auth/company/sign-in', (req, res) => __awaiter(void 0, void 0, voi
 // Update - Company ID other information
 router.patch('/company/update-by-id/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { info: { cnpj, fantasyName, email, cellPhone, nameCorporate }, address: { zipCode, address, locationNumber, complement, city, state, uf, }, owner: { firstName, surname, cpf, role, } } = req.body;
-    const company = {
-        info: {
-            cnpj,
-            fantasyName,
-            email,
-            cellPhone,
-            nameCorporate
-        },
-        address: {
-            zipCode,
-            address,
-            locationNumber,
-            complement,
-            city,
-            state,
-            uf
-        },
-        owner: {
-            firstName,
-            surname,
-            cpf,
-            role
-        }
-    };
+    const { info, address: addressInfo, owner } = req.body;
+    const { cnpj, fantasyName, email, cellPhone, companyName } = info;
+    const { zipCode, address, locationNumber, district, city, state } = addressInfo;
+    const { firstName, surname, cpf, role } = owner;
     try {
-        const updateCompany = yield index_1.default.updateOne({ _id: id }, company);
+        const updateCompany = yield index_1.default.updateOne({ _id: id }, req.body);
+        const company = yield index_1.default.find(Object.assign({}, req.body));
         if (updateCompany.matchedCount === 0) {
             res.status(422).json({ message: 'A empresa não foi encontrada!' });
         }
