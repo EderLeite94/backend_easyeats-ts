@@ -30,7 +30,7 @@ const CompanySchema = new mongoose_1.Schema({
         fantasyName: { type: String, required: true },
         email: { type: String, required: true },
         cellPhone: { type: String },
-        nameCorporate: { type: String }
+        companyName: { type: String }
     },
     address: {
         zipCode: { type: String },

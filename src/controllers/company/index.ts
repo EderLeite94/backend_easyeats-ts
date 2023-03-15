@@ -157,16 +157,15 @@ router.patch('/company/update-by-id/:id', async (req: Request, res: Response) =>
             fantasyName,
             email,
             cellPhone,
-            nameCorporate
+            companyName
         },
         address: {
             zipCode,
             address,
             locationNumber,
-            complement,
+            district,
             city,
-            state,
-            uf,
+            state
         },
         owner: {
             firstName,
@@ -182,22 +181,21 @@ router.patch('/company/update-by-id/:id', async (req: Request, res: Response) =>
             fantasyName,
             email,
             cellPhone,
-            nameCorporate
+            companyName
         },
         address: {
             zipCode,
             address,
             locationNumber,
-            complement,
+            district,
             city,
-            state,
-            uf
+            state
         },
         owner: {
             firstName,
             surname,
             cpf,
-            role
+            role,
         }
     };
     try {
