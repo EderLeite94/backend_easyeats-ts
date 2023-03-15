@@ -129,10 +129,12 @@ router.get('/employee/get-all/:companyCNPJ/:name?', (req, res) => __awaiter(void
             .limit(parseInt(limit))
             .sort('-accountcreatedate')
             .exec();
-        const totalCount = yield index_1.default.countDocuments(Object.assign(Object.assign({}, nameFilter), companyFilter));
+        const totalCount = yield index_1.default.countDocuments(Object.assign({}, companyFilter));
+        const totalCountPerPage = yield index_1.default.countDocuments(Object.assign({}, nameFilter));
         res.json({
             employees,
-            totalCount
+            totalCount,
+            totalCountPerPage
         });
     }
     catch (error) {

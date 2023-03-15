@@ -136,20 +136,22 @@ router.get('/employee/get-all/:companyCNPJ/:name?', async (req: Request, res: Re
     const name: string = req.query.name as string || ''
 
     const companyFilter = companyCNPJ ? { 'company.cnpj': { $regex: new RegExp(companyCNPJ, 'i') } } : {};
-    const nameFilter = name ? {'info.firstName': {$regex: new RegExp(name,'i')}} :{};
+    const nameFilter = name ? { 'info.firstName': { $regex: new RegExp(name, 'i') } } : {};
 
     try {
+
         const employees = await Employees.find({ ...nameFilter, ...companyFilter })
             .skip((parseInt(page) - 1) * parseInt(limit))
             .limit(parseInt(limit))
             .sort('-accountcreatedate')
             .exec();
 
-        const totalCount = await Employees.countDocuments({ ...nameFilter, ...companyFilter });
-
+        const totalCount = await Employees.countDocuments({ ...companyFilter });
+        const totalCountFiltered = await Employees.countDocuments({ ...nameFilter })
         res.json({
             employees,
-            totalCount
+            totalCount,
+            totalCountFiltered
         });
     } catch (error) {
         console.error(error);
