@@ -157,10 +157,8 @@ router.patch('/company/update-by-id/:id', async (req: Request, res: Response) =>
     const { firstName, surname, cpf, role }= owner;
 
     try {
-        delete req.body.company;
-        
         const updateCompany = await Company.updateOne({ _id: id }, req.body);
-        const company = await Company.find({ _id: id  });
+        const company = await Company.find({ _id: id  })[0];
         if (updateCompany.matchedCount === 0) {
             res.status(422).json({ message: 'A empresa não foi encontrada!' });
         }
