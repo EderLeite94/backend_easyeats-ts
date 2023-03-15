@@ -8,7 +8,7 @@ export interface ICompany {
     fantasyName: string;
     email: string;
     cellPhone?: string;
-    nameCorporate?: string;
+    companyName?: string;
   };
   address: {
     zipCode?: string;
@@ -42,7 +42,7 @@ const CompanySchema: Schema = new Schema(
       fantasyName: { type: String, required: true },
       email: { type: String, required: true },
       cellPhone: { type: String },
-      nameCorporate: { type: String }
+      companyName: { type: String }
     },
     address: {
       zipCode: { type: String },
