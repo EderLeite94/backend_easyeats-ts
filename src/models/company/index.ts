@@ -2,6 +2,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export interface ICompany {
   updateOne(arg0: { rating: number; }): unknown;
+  updateOne(arg0: { plan: number; }): unknown;
   info: {
     _id: any;
     cnpj: string;
@@ -30,7 +31,11 @@ export interface ICompany {
   };
   rating: {
     howRatedUs: number
+  };
+  plan: {
+    id: number
   }
+
 }
 
 export type CompanyDocument = ICompany & Document;
@@ -64,6 +69,9 @@ const CompanySchema: Schema = new Schema(
     },
     rating: {
       howRatedUs: { type: Number }
+    },
+    plan: {
+      id: { type: Number }
     }
   },
 );

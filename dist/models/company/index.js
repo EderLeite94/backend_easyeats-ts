@@ -52,6 +52,9 @@ const CompanySchema = new mongoose_1.Schema({
     },
     rating: {
         howRatedUs: { type: Number }
+    },
+    plan: {
+        id: { type: Number }
     }
 });
 const Company = mongoose_1.default.model('Company', CompanySchema);
