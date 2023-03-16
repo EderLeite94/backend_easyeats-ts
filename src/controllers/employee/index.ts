@@ -6,34 +6,12 @@ const router = express.Router();
 
 //Register Employees
 router.post('/employee/register', async (req: Request, res: Response) => {
-    const {
-        info: {
-            cpf,
-            firstName,
-            surname,
-            socialName,
-            dateOfBirth,
-            cellPhone,
-            role,
-            email,
-            admissionDate
-        },
-        address: {
-            zipCode,
-            address,
-            locationNumber,
-            district,
-            city,
-            state
-        },
-        security: {
-            password,
-            confirmPassword,
-        },
-        company: {
-            cnpj,
-        }
-    } = req.body;
+    const { info, address: addressInfo, security, company } = req.body;
+    const { cpf, firstName, surname, socialName, dateOfBirth, cellPhone, role, email, admissionDate } = info;
+    const { zipCode, address, locationNumber, district, city, state, } = addressInfo;
+    const { password, confirmPassword } = security;
+    const { cnpj } = company;
+
     //Create password
     const salt = await bcrypt.genSalt(12)
     const passwordHash = await bcrypt.hash(password, salt)
@@ -41,33 +19,14 @@ router.post('/employee/register', async (req: Request, res: Response) => {
     const data = new Date();
     const now = new Date(data.getTime() - (3 * 60 * 60 * 1000));
     const employees = {
-        info: {
-            cpf,
-            firstName,
-            surname,
-            socialName,
-            dateOfBirth,
-            cellPhone,
-            role,
-            email,
-            admissionDate
-        },
-        address: {
-            zipCode,
-            address,
-            locationNumber,
-            district,
-            city,
-            state
-        },
+        info,
+        address,
         security: {
             password: passwordHash,
             confirmPassword,
             accountCreateDate: now
         },
-        company: {
-            cnpj,
-        }
+        company
     }
     if (!cpf) {
         return res.status(422).json({ error: 'O CPF é obrigatorio!' })
@@ -116,6 +75,7 @@ router.get('/employee/get-by-id/:id', async (req: Request, res: Response) => {
     try {
         const employee = await Employees.findOne({ _id: id })
         const company = await Company.findOne({ cnpj: employee.company.cnpj })
+        
         if (!id) {
             res.status(422).json({ message: 'Colaborador não encontrado!' })
             return
@@ -139,7 +99,6 @@ router.get('/employee/get-all/:companyCNPJ/:name?', async (req: Request, res: Re
     const nameFilter = name ? { 'info.firstName': { $regex: new RegExp(name, 'i') } } : {};
 
     try {
-
         const employees = await Employees.find({ ...nameFilter, ...companyFilter })
             .skip((parseInt(page) - 1) * parseInt(limit))
             .limit(parseInt(limit))
@@ -147,7 +106,8 @@ router.get('/employee/get-all/:companyCNPJ/:name?', async (req: Request, res: Re
             .exec();
 
         const totalCount = await Employees.countDocuments({ ...companyFilter });
-        const totalCountFiltered = await Employees.countDocuments({ ...nameFilter })
+        const totalCountFiltered = await Employees.countDocuments({ ...nameFilter });
+        
         res.json({
             employees,
             totalCount,
@@ -162,51 +122,12 @@ router.get('/employee/get-all/:companyCNPJ/:name?', async (req: Request, res: Re
 //Update employee 
 router.patch('/employee/update-by-id/:id', async (req: Request, res: Response) => {
     const id: string = req.params.id;
-    const {
-        info: {
-            cpf,
-            firstName,
-            surname,
-            socialName,
-            dateOfBirth,
-            cellPhone,
-            role,
-            email,
-            admissionDate,
-            resignationDate
-        },
-        address: {
-            zipCode,
-            address,
-            locationNumber,
-            district,
-            city,
-            state
-        }
-    } = req.body;
+    const { info, address: addressInfo } = req.body;
+    const { cpf, firstName, surname, socialName, dateOfBirth, cellPhone, role, email, admissionDate, resignationDate } = info;
+    const { zipCode, address, locationNumber, district, city, state } = addressInfo;
 
-    const employee = {
-        info: {
-            cpf,
-            firstName,
-            surname,
-            socialName,
-            dateOfBirth,
-            cellPhone,
-            role,
-            email,
-            admissionDate,
-            resignationDate
-        },
-        address: {
-            zipCode,
-            address,
-            locationNumber,
-            district,
-            city,
-            state
-        }
-    };
+    const employee = { info, address };
+    
     try {
         const updateEmployee = await Employees.updateOne({ _id: id }, employee);
         if (updateEmployee.matchedCount === 0) {

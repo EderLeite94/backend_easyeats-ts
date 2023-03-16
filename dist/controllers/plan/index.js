@@ -19,13 +19,13 @@ router.put('/plan/:id/', (req, res) => __awaiter(void 0, void 0, void 0, functio
     const companyId = req.params.id;
     const { plan } = req.body;
     const { id } = plan;
-    const company = yield index_1.default.findById(companyId);
-    if (!company) {
-        return res.status(422).json({ message: 'Empresa não encontrada' });
-    }
     try {
+        const company = yield index_1.default.findById(companyId);
+        if (!company) {
+            return res.status(422).json({ message: 'Empresa não encontrada' });
+        }
         yield company.updateOne({ plan });
-        res.json({ message: 'Plano atualizado com sucesso!', company });
+        res.json({ message: 'Plano atualizado com sucesso!' });
     }
     catch (error) {
         res.status(500).json({ error: error });

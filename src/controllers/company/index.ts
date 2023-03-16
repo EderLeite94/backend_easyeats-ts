@@ -7,17 +7,10 @@ const router = express.Router();
 
 // Register company
 router.post('/auth/company/sign-up', async (req: Request, res: Response) => {
-    const {
-        info: {
-            cnpj,
-            fantasyName,
-            email,
-        },
-        security: {
-            password,
-            confirmPassword
-        }
-    } = req.body;
+    const { info, security } = req.body;
+    const { cnpj, fantasyName, email } = info;
+    const { password, confirmPassword } = security
+
     // create password
     const salt = await bcrypt.genSalt(12);
     const passwordHash = await bcrypt.hash(password, salt);
@@ -52,11 +45,7 @@ router.post('/auth/company/sign-up', async (req: Request, res: Response) => {
         return res.status(422).json({ error: 'CNPJ já cadastrado!' });
     }
     const company = {
-        info: {
-            cnpj,
-            fantasyName,
-            email
-        },
+        info,
         security: {
             password: passwordHash,
             accountCreateDate: now
@@ -104,14 +93,9 @@ router.get('/listcompany/:id', async (req: Request, res: Response) => {
 
 //Login Company
 router.post('/auth/company/sign-in', async (req: Request, res: Response) => {
-    const {
-        info: {
-            cnpj
-        },
-        security: {
-            password
-        }
-    } = req.body;
+    const { info, security } = req.body;
+    const { cnpj } = info;
+    const { password } = security;
 
     if (!cnpj) {
         return res.status(422).json({ message: ' O CNPJ é obrigatorio!' });

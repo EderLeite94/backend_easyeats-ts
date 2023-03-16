@@ -19,7 +19,9 @@ const index_1 = __importDefault(require("../../models/company/index"));
 const router = express_1.default.Router();
 // Register company
 router.post('/auth/company/sign-up', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { info: { cnpj, fantasyName, email, }, security: { password, confirmPassword } } = req.body;
+    const { info, security } = req.body;
+    const { cnpj, fantasyName, email } = info;
+    const { password, confirmPassword } = security;
     // create password
     const salt = yield bcrypt_1.default.genSalt(12);
     const passwordHash = yield bcrypt_1.default.hash(password, salt);
@@ -95,7 +97,9 @@ router.get('/listcompany/:id', (req, res) => __awaiter(void 0, void 0, void 0, f
 }));
 //Login Company
 router.post('/auth/company/sign-in', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { info: { cnpj }, security: { password } } = req.body;
+    const { info, security } = req.body;
+    const { cnpj } = info;
+    const { password } = security;
     if (!cnpj) {
         return res.status(422).json({ message: ' O CNPJ é obrigatorio!' });
     }

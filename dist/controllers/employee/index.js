@@ -19,7 +19,11 @@ const index_2 = __importDefault(require("../../models/company/index"));
 const router = express_1.default.Router();
 //Register Employees
 router.post('/employee/register', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { info: { cpf, firstName, surname, socialName, dateOfBirth, cellPhone, role, email, admissionDate }, address: { zipCode, address, locationNumber, district, city, state }, security: { password, confirmPassword, }, company: { cnpj, } } = req.body;
+    const { info, address: addressInfo, security, company } = req.body;
+    const { cpf, firstName, surname, socialName, dateOfBirth, cellPhone, role, email, admissionDate } = info;
+    const { zipCode, address, locationNumber, district, city, state, } = addressInfo;
+    const { password, confirmPassword } = security;
+    const { cnpj } = company;
     //Create password
     const salt = yield bcrypt_1.default.genSalt(12);
     const passwordHash = yield bcrypt_1.default.hash(password, salt);
@@ -145,29 +149,10 @@ router.get('/employee/get-all/:companyCNPJ/:name?', (req, res) => __awaiter(void
 //Update employee 
 router.patch('/employee/update-by-id/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { info: { cpf, firstName, surname, socialName, dateOfBirth, cellPhone, role, email, admissionDate, resignationDate }, address: { zipCode, address, locationNumber, district, city, state } } = req.body;
-    const employee = {
-        info: {
-            cpf,
-            firstName,
-            surname,
-            socialName,
-            dateOfBirth,
-            cellPhone,
-            role,
-            email,
-            admissionDate,
-            resignationDate
-        },
-        address: {
-            zipCode,
-            address,
-            locationNumber,
-            district,
-            city,
-            state
-        }
-    };
+    const { info, address: addressInfo } = req.body;
+    const { cpf, firstName, surname, socialName, dateOfBirth, cellPhone, role, email, admissionDate, resignationDate } = info;
+    const { zipCode, address, locationNumber, district, city, state } = addressInfo;
+    const employee = { info, address };
     try {
         const updateEmployee = yield index_1.default.updateOne({ _id: id }, employee);
         if (updateEmployee.matchedCount === 0) {
