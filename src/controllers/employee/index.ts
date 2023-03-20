@@ -20,7 +20,7 @@ router.post('/employee/register', async (req: Request, res: Response) => {
     const now = new Date(data.getTime() - (3 * 60 * 60 * 1000));
     const employees = {
         info,
-        addressInfo,
+        address: addressInfo,
         security: {
             password: passwordHash,
             confirmPassword,
@@ -75,7 +75,7 @@ router.get('/employee/get-by-id/:id', async (req: Request, res: Response) => {
     try {
         const employee = await Employees.findOne({ _id: id })
         const company = await Company.findOne({ cnpj: employee.company.cnpj })
-        
+
         if (!id) {
             res.status(422).json({ message: 'Colaborador não encontrado!' })
             return
@@ -107,7 +107,7 @@ router.get('/employee/get-all/:companyCNPJ/:name?', async (req: Request, res: Re
 
         const totalCount = await Employees.countDocuments({ ...companyFilter });
         const totalCountFiltered = await Employees.countDocuments({ ...nameFilter });
-        
+
         res.json({
             employees,
             totalCount,
@@ -127,7 +127,7 @@ router.patch('/employee/update-by-id/:id', async (req: Request, res: Response) =
     const { zipCode, address, locationNumber, district, city, state } = addressInfo;
 
     const employee = { info, address };
-    
+
     try {
         const updateEmployee = await Employees.updateOne({ _id: id }, employee);
         if (updateEmployee.matchedCount === 0) {
