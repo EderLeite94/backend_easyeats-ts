@@ -20,7 +20,7 @@ router.post('/employee/register', async (req: Request, res: Response) => {
     const now = new Date(data.getTime() - (3 * 60 * 60 * 1000));
     const employees = {
         info,
-        address,
+        addressInfo,
         security: {
             password: passwordHash,
             confirmPassword,
