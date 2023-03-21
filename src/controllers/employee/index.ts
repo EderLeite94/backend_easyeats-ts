@@ -126,7 +126,7 @@ router.patch('/employee/update-by-id/:id', async (req: Request, res: Response) =
     const { cpf, firstName, surname, socialName, dateOfBirth, cellPhone, role, email, admissionDate, resignationDate } = info;
     const { zipCode, address, locationNumber, district, city, state } = addressInfo;
 
-    const employee = { info, address };
+    const employee = { info, address: addressInfo };
 
     try {
         const updateEmployee = await Employees.updateOne({ _id: id }, employee);
