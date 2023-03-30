@@ -10,8 +10,10 @@ export interface IEmployees {
         cellPhone?: string;
         role: string;
         email?: string;
+        gender: string;
+        salary: number;
         admissionDate?: Date;
-        resignationDate?: Date;
+        resignationDate?: Date
     };
     address: {
         zipCode?: string;
@@ -19,7 +21,7 @@ export interface IEmployees {
         locationNumber?: string;
         district?: string;
         city?: string;
-        state?: string;
+        state?: string
     };
     security: {
         password: string;
@@ -42,6 +44,8 @@ const EmployeesSchema: Schema = new Schema(
             cellPhone: { type: String },
             role: { type: String, required: true },
             email: { type: String },
+            gender: { type: String },
+            salary: { type: Number },
             admissionDate: { type: Date, required: true },
             resignationDate: { type: Date }
         },
