@@ -7,7 +7,7 @@ const router = express.Router();
 //Register Employees
 router.post('/employee/register', async (req: Request, res: Response) => {
     const { info, address: addressInfo, security, company } = req.body;
-    const { cpf, firstName, surname, socialName, dateOfBirth, cellPhone, role, email, admissionDate } = info;
+    const { cpf, firstName, surname, socialName, dateOfBirth, cellPhone, role, email, admissionDate, gender, salary } = info;
     const { zipCode, address, locationNumber, district, city, state, } = addressInfo;
     const { password, confirmPassword } = security;
     const { cnpj } = company;
