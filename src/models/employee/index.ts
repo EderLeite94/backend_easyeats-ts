@@ -13,7 +13,8 @@ export interface IEmployees {
         gender: string;
         salary: number;
         admissionDate?: Date;
-        resignationDate?: Date
+        resignationDate?: Date;
+        profilePicture?: string
     };
     address: {
         zipCode?: string;
@@ -47,7 +48,8 @@ const EmployeesSchema: Schema = new Schema(
             gender: { type: String },
             salary: { type: Number },
             admissionDate: { type: Date, required: true },
-            resignationDate: { type: Date }
+            resignationDate: { type: Date },
+            profilePicture: { type: String}
         },
         address: {
             zipCode: { type: String },

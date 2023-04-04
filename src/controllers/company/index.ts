@@ -136,7 +136,7 @@ router.post('/auth/company/sign-in', async (req: Request, res: Response) => {
 router.patch('/company/update-by-id/:id', async (req: Request, res: Response) => {
     const id: string = req.params.id;
     const { info, address: addressInfo, owner } = req.body;
-    const { cnpj, fantasyName, email, cellPhone, companyName } = info;
+    const { cnpj, fantasyName, email, cellPhone, companyName, logo } = info;
     const { zipCode, address, locationNumber, district, city, state } = addressInfo;
     const { firstName, surname, cpf, role } = owner;
 

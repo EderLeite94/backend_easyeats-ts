@@ -10,6 +10,7 @@ export interface ICompany {
     email: string;
     cellPhone?: string;
     companyName?: string;
+    logo?: string;
   };
   address: {
     zipCode?: string;
@@ -47,7 +48,8 @@ const CompanySchema: Schema = new Schema(
       fantasyName: { type: String, required: true },
       email: { type: String, required: true },
       cellPhone: { type: String },
-      companyName: { type: String }
+      companyName: { type: String },
+      logo: { type: String }
     },
     address: {
       zipCode: { type: String },
