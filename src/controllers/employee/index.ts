@@ -123,7 +123,7 @@ router.get('/employee/get-all/:companyCNPJ/:name?', async (req: Request, res: Re
 router.patch('/employee/update-by-id/:id', async (req: Request, res: Response) => {
     const id: string = req.params.id;
     const { info, address: addressInfo } = req.body;
-    const { cpf, firstName, surname, socialName, dateOfBirth, cellPhone, role, email, admissionDate, resignationDate } = info;
+    const { cpf, firstName, surname, socialName, dateOfBirth, cellPhone, role, email, admissionDate, resignationDate, profilePicture } = info;
     const { zipCode, address, locationNumber, district, city, state } = addressInfo;
 
     const employee = { info, address: addressInfo };
